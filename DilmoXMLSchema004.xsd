@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+targetNamespace="http://www.example.org/DilmoXMLSchema004"
+ xmlns:tns="http://www.example.org/DilmoXMLSchema004"
+ elementFormDefault="qualified">
+<xs:element  name="proxemic"> 
+    <xs:complexType> 
+      	  <xs:sequence> 
+		  <xs:element name="cps" type="xs:string"></xs:element>
+          <xs:element name="zone" >
+	        <xs:complexType>
+	          <xs:sequence>
+	            <xs:element name="intimate" type="xs:double"/>
+	            <xs:element name="personal" type="xs:double"/>
+	            <xs:element name="social" type="xs:double"/>
+	            <xs:element name="public" type="xs:double"/>
+	          </xs:sequence>
+	        </xs:complexType>
+	      </xs:element>
+        
+        
+      <xs:element name="entity" maxOccurs="unbounded">
+	        <xs:complexType>
+	          <xs:sequence>
+	            <xs:element name="distance" type="xs:double"/>
+	            <xs:element name="identity" type="xs:string" minOccurs="1"/>
+	            <xs:element name="location" type="xs:string"/>
+	            <xs:element name="movement" type="xs:double"/>
+	            <xs:element name="orientation" type="xs:boolean"/>
+	          </xs:sequence>
+	        </xs:complexType>
+	      </xs:element>
+      </xs:sequence> 
+    </xs:complexType> 
+  </xs:element>
+</xs:schema>

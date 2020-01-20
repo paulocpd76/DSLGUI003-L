@@ -1,0 +1,41 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<tns:proxemic  xmlns:tns="http://www.example.org/DilmoXMLSchema004"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.jmdoudoux.com/test/jaxb biblio.xsd  ">
+<tns:cps>cps</tns:cps>  
+	<tns:zone>
+     <tns:intimate>0.4</tns:intimate>
+     <tns:personal>1</tns:personal>
+     <tns:social>4</tns:social>
+     <tns:public>10</tns:public>  
+  </tns:zone>
+     <tns:entity>
+     <tns:distance> 0.4</tns:distance>
+     <tns:identity>Identity</tns:identity>
+     <tns:location>null</tns:location>
+     <tns:movement>1</tns:movement>
+     <tns:orientation>true</tns:orientation>
+   </tns:entity>
+	<tns:entity>
+     <tns:distance> 0.9</tns:distance>
+     <tns:identity>Identity</tns:identity>
+     <tns:location>null</tns:location>
+     <tns:movement>1</tns:movement>
+     <tns:orientation>false</tns:orientation>
+   </tns:entity>
+   	<tns:entity>
+     <tns:distance> 0.2</tns:distance>
+     <tns:identity>Identity</tns:identity>
+     <tns:location>null</tns:location>
+     <tns:movement>1</tns:movement>
+     <tns:orientation>false</tns:orientation>
+   </tns:entity>
+   <tns:entity>
+     <tns:distance> 5</tns:distance>
+     <tns:identity>entity</tns:identity>
+     <tns:location>null</tns:location>
+     <tns:movement>0.0</tns:movement>
+     <tns:orientation>true</tns:orientation>
+   </tns:entity>
+</tns:proxemic>
+  

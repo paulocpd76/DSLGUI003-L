@@ -4,14 +4,14 @@
                    xsi:schemaLocation="http://www.jmdoudoux.com/test/jaxb biblio.xsd  ">
 <tns:cps>cps</tns:cps>  
 	<tns:zone>
-     <tns:intimate>0.5</tns:intimate>
+     <tns:intimate>0.4</tns:intimate>
      <tns:personal>1</tns:personal>
      <tns:social>4</tns:social>
-     <tns:public>10</tns:public>   
+     <tns:public>7</tns:public>   
   </tns:zone>
      <tns:entity>
-     <tns:distance> 6</tns:distance>
-     <tns:identity>entity</tns:identity>
+     <tns:distance>4</tns:distance>
+     <tns:identity>Entity</tns:identity>
      <tns:location>null</tns:location>
      <tns:movement>1.0</tns:movement>
      <tns:orientation>true</tns:orientation>

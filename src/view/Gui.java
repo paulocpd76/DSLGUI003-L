@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import javax.swing.JLayeredPane;
 import javax.swing.JInternalFrame;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -28,15 +29,20 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ChangeEvent;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
+import Controller.BehaviourEI;
 import Controller.DilmoXML;
+import Controller.EventIdentity;
 import Controller.ValtionDIL;
 import Proxemic.Dilmo;
+import Proxemic.Distance;
 import Proxemic.ProxZone;
 import dilmo004.Proxemic;
 import dilmo004.Proxemic.Entity;
+
 
 import java.awt.SystemColor;
 import java.awt.TextField;
@@ -56,8 +62,10 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextPane;
 import javax.swing.JTextArea;
+import java.awt.Button;
+import javax.swing.JRadioButton;
 
-public class Gui {
+public class Gui<E> {
 
 
 	private static final Object BorderLayout = null;
@@ -66,16 +74,32 @@ public class Gui {
 	private String xdsPath;
 	private File   xmlPathObjec;
 	private JInternalFrame f1[];
-	private JSlider[] s;
-	JTextArea txtrHol,textArea,textArea_1,textArea_2 ;
+	//private JSlider[] slider;
+	JTextArea txtrHol,textArea,textArea_1,textArea_2,textArea_3 ;
+	JLabel intimate,personal,social,puclicZone;
+	JTextField textField[][];
+	Choice choicel[][] ;
 	String[] strArray1;
-	public ProxZone validationdl;
+	public String[] arrOfCpsGeneral ;
+	JRadioButton rdbtnIntimateZone,radioButton_1,radioButton_2,radioButton_3;
+	ButtonGroup group;
+	JButton btnNewButton_1;
+	public String[] getArrOfCpsGeneral() {
+		return arrOfCpsGeneral;
+	}
+
+	public void setArrOfCpsGeneral(String[] arrOfCpsGeneral) {
+		this.arrOfCpsGeneral = arrOfCpsGeneral;
+	}
+
+	public ProxZone validationdl,ProxZone;
 	public Dilmo dil;
 	ArrayList<Proxemic.Entity> entities;
     private Highlighter.HighlightPainter cyanPainter;
     private Highlighter.HighlightPainter redPainter;
-	
-	public JInternalFrame[] getF1() {
+    List<Entity> e1 ;
+    
+    	public JInternalFrame[] getF1() {
 		return f1;
 	}
 
@@ -94,6 +118,8 @@ public class Gui {
 	String getXmlPath() {
 		return xmlPath;
 	}
+	
+	
 
 	public void setXmlPath(String xmlPath) {
 		this.xmlPath = xmlPath;
@@ -152,12 +178,22 @@ public class Gui {
 				File file = fc.getSelectedFile();
 				setXmlPathObjec(file);
 				setXmlPath(file.getAbsolutePath());
+				
 				JInternalFrame[] fra = (JInternalFrame[]) getF1();
+				//txtrHol,textArea,textArea_1,textArea_2 ;
+				txtrHol.setText("");
+				textArea.setText("");
+				textArea_1.setText("");
+				textArea_2.setText("");
 				if (fra==null) System.out.println("new");
 				else {
-					
+					 intimate.setText("");
+					 personal.setText("");
+					 social.setText("");
+					 puclicZone.setText("");
+					 System.out.println("fra"+fra.length);
 					for (int i = 0; i < fra.length; i++) {
-						fra[i].setVisible(false);	
+					fra[i].setVisible(false);	
 					}
 				} 
 				
@@ -165,9 +201,8 @@ public class Gui {
 				
 			}
 		});
-		btnNewButton.setBounds(800, 282, 97, 25);
+		btnNewButton.setBounds(821, 120, 97, 25);
 		frame.getContentPane().add(btnNewButton);
-		
 		JButton btnXsdFile = new JButton("Xsd file");
 		btnXsdFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -178,7 +213,7 @@ public class Gui {
 				 
 			}
 		});
-		btnXsdFile.setBounds(800, 340, 97, 25);
+		btnXsdFile.setBounds(946, 120, 97, 25);
 		frame.getContentPane().add(btnXsdFile);
 		
 		
@@ -186,7 +221,7 @@ public class Gui {
 		//panel.add(BorderLayout.CENTER, new JScrollPane(panel));
 
 		panel.setBackground(new Color(0, 255, 127));
-		panel.setBounds(23, 13, 758, 469);
+		panel.setBounds(23, 13, 758, 332);
 		frame.getContentPane().add(panel);
 		//frame.getContentPane().add(new JScrollPane(panel));
 		//frame.add(BorderLayout., new JScrollPane(panel));
@@ -194,57 +229,54 @@ public class Gui {
 		JButton btnCreate = new JButton("Create");
 		btnCreate.addActionListener(new ActionListener() {
 		
-			private Dilmo dil;
-			private ProxZone validationdl;
+			//private Dilmo dil;
+		//	private ProxZone validationdl;
 			
 			public void actionPerformed(ActionEvent e) {
 				  DilmoXML dilmo= new DilmoXML();
-				
-				if(dilmo.validateXMLSchema(getXdsPath(),getXmlPath())) {
+				  if(dilmo.validateXMLSchema(getXdsPath(),getXmlPath())) {
 					//System.out.println(getXmlPathObjec().getName());
 					//dilmo.getDilmlXmlFile(getXmlPathObjec().getName(), "dilmo002");
-					List<Entity> e1 =dilmo.getLitsOfEntity(getXmlPathObjec().getName(), "dilmo004");
+					e1 =dilmo.getLitsOfEntity(getXmlPathObjec().getName(), "dilmo004");
 					String CPS= dilmo.getCPSinfo(getXmlPathObjec().getName(),"dilmo004");
 					ImageIcon cps = new ImageIcon("img/cps2.png", "a pretty but meaningless splat");
 					
 					JLabel lblNewLabel_1 = new JLabel();
 					lblNewLabel_1.setIcon(cps);
-					lblNewLabel_1.setBounds(800, -160, 600, 500);
+					lblNewLabel_1.setBounds(870, -170, 600, 500);
 					frame.getContentPane().add(lblNewLabel_1);
 					//Image cps = new Image
 					//cps.se;
 					 String[] arrOfCps = CPS.split("-");
+					 setArrOfCpsGeneral(arrOfCps);
 					 //intimate
-					 JLabel intimate = new JLabel("Intimate Zone:" +arrOfCps[0]);
-					 intimate.setBounds(800, -120, 600, 500);
+					 intimate = new JLabel(arrOfCps[0]);
+					 intimate.setBounds(890, 204, 150, 16);
 					 frame.getContentPane().add(intimate);
 					 //personal
-					 JLabel personal = new JLabel("Personal Zone:" +arrOfCps[1]);
-					 personal.setBounds(800, -80, 600, 500);
+					 personal = new JLabel(arrOfCps[1]);
+					 personal.setBounds(1045, 204, 150, 16);
 					 frame.getContentPane().add(personal);
 					 //social
-					 JLabel social = new JLabel("Social Zone:"    +arrOfCps[2]);
-					 social.setBounds(800, -40, 600, 500);
+					 social = new JLabel(arrOfCps[2]);
+					 social.setBounds(880, 325, 100, 16);
 					 frame.getContentPane().add(social);
 					//social
-					 JLabel puclicZone= new JLabel("Public Zone:"  +arrOfCps[3]);
-					 puclicZone.setBounds(800, -1, 600, 500);
-					frame.getContentPane().add(puclicZone);
-					 
-					 this.validationdl = new ProxZone(Double.valueOf(arrOfCps[0]),Double.valueOf(arrOfCps[1]),Double.valueOf(arrOfCps[2]),Double.valueOf(arrOfCps[3]));
-			    	 this.dil= new Dilmo(validationdl);
-			       	
-				
-					
-					JInternalFrame f1[] = new JInternalFrame[e1.size()];
-					
+					 puclicZone= new JLabel(arrOfCps[3]);
+					 puclicZone.setBounds(1028, 325,100, 16);
+					 frame.getContentPane().add(puclicZone);
+					 //button 
+					 btnNewButton_1.setEnabled(true);
+					validationdl = new ProxZone(Double.valueOf(arrOfCps[0]),Double.valueOf(arrOfCps[1]),Double.valueOf(arrOfCps[2]),Double.valueOf(arrOfCps[3]));
+			    	dil= new Dilmo(validationdl);
+			       	JInternalFrame f1[] = new JInternalFrame[e1.size()];
+					setF1(f1);
 					
 					int x=0;
-					
-					JTextField textField[][]  = new JTextField[e1.size()][4];
+					textField  = new JTextField[e1.size()][4];
 					JLabel lblNewLabel[][] = new JLabel[e1.size()][4];
-					Choice choicel[][]  = new Choice[e1.size()][4];
-					
+					choicel = new Choice[e1.size()][4];
+					JSlider   slider[][] = new JSlider[e1.size()][4];
 				
 					int iden=1;
 			     	int ent=1;
@@ -254,41 +286,30 @@ public class Gui {
 					for (int i=0;i<e1.size();i++) {
 							String id= e1.get(i).getIdentity();
 							id= id.trim();
-						  	if(id.equals("person")||id.equals("user")||id.equals("customer")||id.equals("entity")) {
+						  	if(id.equals("person")||id.equals("user")||id.equals("customer")||id.equals("Entity")) {
 					     		f1[i]= new JInternalFrame(id+Integer.toString(ent));
 					     		f1[i].getContentPane().setLayout(new BoxLayout(f1[i].getContentPane(), BoxLayout.Y_AXIS));
 					     		f1[i].setFrameIcon(icon2);
 					     		String tem=id+Integer.toString(ent).trim();
 					     		 double d=  e1.get(i).getDistance();
-						        // System.out.println(tem);
-					     		 dil.setProxemicDI(tem, d);
-			         	    	//System.out.println( this.validationdl.getEntities().size());
-					     		//System.out.println(tem);
-					     		
+						        dil.setProxemicDI(tem, d);
 					     		ent=ent+1;
 					       	
 					     	}
 					     	else {
-					     		
-					     		f1[i]= new JInternalFrame(id+Integer.toString(iden));
+					     		//remove idenumber
+					     		//f1[i]= new JInternalFrame(id+Integer.toString(iden));
+					     		f1[i]= new JInternalFrame(id);
 					     		f1[i].getContentPane().setLayout(new BoxLayout(f1[i].getContentPane(), BoxLayout.Y_AXIS));
 					     		f1[i].setFrameIcon(icon);
-					     		String tem2=id+Integer.toString(iden).trim();
-					     	   
-					     		double d=  e1.get(i).getDistance();
-					     	//	 System.out.println(tem2+ d);
+					     		//String tem2=id+Integer.toString(iden).trim();
+					     		String tem2=id.trim();
+					     	   	double d=  e1.get(i).getDistance();
 					     		dil.setProxemicDI(tem2,d);
-					     		//System.out.println( this.validationdl.getEntities().size());
-
+					     	   	
 					     		iden=iden+1;
 					       		}
-						     	
-					         	
-					     	
-					     	/*
-					     	 * aqui
-					     	 */
-					     	f1[i].setBounds(x, 70, 180, 180);
+					     	f1[i].setBounds(x, 70, 40, 180);
 						   	panel.add(f1[i]);
 						
 							f1[i].setVisible(true);
@@ -301,20 +322,15 @@ public class Gui {
 								lblNewLabel[i][3]= new JLabel("Orientation");
 								textField[i][0]= new JTextField();
 								textField[i][1]= new JTextField();
+								textField[i][2]= new JTextField();
 								choicel[i][0]= new Choice();
 								choicel[i][1]= new Choice();
-								//f1[i].getContentPane().add(lblNewLabel[i][0]);
-							
-								
-								
+							    slider[i][0]=  new JSlider();
 								textField[i][0].addMouseListener(new MouseListener() {
-									
-									@Override
+										@Override
 									public void mouseReleased(MouseEvent e) {
 										// TODO Auto-generated method stub
-										System.out.println("Paulo");
-											
-										//txtrHol.append("xxx");
+											//txtrHol.append("xxx");
 										
 									}
 									
@@ -344,15 +360,132 @@ public class Gui {
 								});
 								
 							}
-							
+							final int r=i;
 							try {
 								
+								//Slider Paulo
+								slider[i][0].setBounds(10, 10, 10, 20);				
+								slider[i][0].setMinimum(0);
+								slider[i][0].setMaximum(10);
+								slider[i][0].setValue((int)e1.get(i).getDistance());
+								f1[i].getContentPane().add(slider[i][0]);	
+								slider[i][0].addChangeListener(new javax.swing.event.ChangeListener() {
+								Distance dist= new Distance();
+								 @Override
+									public void stateChanged(ChangeEvent e) {
+										JInternalFrame[] fra = (JInternalFrame[]) getF1();
+										Double disTem;
+										if(slider[r][0].getValue()==0) {
+											 disTem= 0.4;
+											 textField[r][0].setText(Double.toString(disTem));
+										}else {
+											 disTem= Double.valueOf(slider[r][0].getValue());
+										}
+										String dinamic=dist.setDynamicDistance(Double.valueOf(slider[r][0].getValue()));
+										if(dinamic.equals("down++")) {
+											textField[r][2].setText("positive");
+										}
+										if(dinamic.equals("up++")) {
+											textField[r][2].setText("negative");	
+										}
+										if(dinamic.equals("stop")) {
+											textField[r][2].setText("static");	
+																			
+										}
+										String nameEnSlider= validationdl.getEntities().get(r).getIdenEntityName();
+										textField[r][0].setText(Double.toString(disTem));
+										double in=Double.valueOf(arrOfCpsGeneral[0]);
+										double pe=Double.valueOf(arrOfCpsGeneral[1]);
+										double so=Double.valueOf(arrOfCpsGeneral[2]);
+										double pu=Double.valueOf(arrOfCpsGeneral[3]);
+										ProxZone pz= new ProxZone(in, pe, so, pu);
+										Dilmo dilTem= new Dilmo(pz);
+										for (int n = 0; n < validationdl.getEntities().size(); n++) {
+											 String	nameTem =validationdl.getEntities().get(n).getIdenEntityName();
+									    	dilTem.setProxemicDI(nameTem,Double.valueOf(textField[n][0].getText()));
+									    	//System.out.println(nameTem+"-"+textField[n][0].getText());
+									    	dilTem.getProxemicDI(nameTem);
+									    	Double.valueOf(slider[r][0].getValue());
+									    } 
+										
+										txtrHol.setText("");
+										textArea.setText("");
+										textArea_1.setText("");
+										textArea_2.setText("");
+										if(textField[r][1].getText().equals("null")) {
+											System.out.println("location nulll");
+											 
+										}
+										else {
+											// String[] arrOfCps = CPS.split("-");
+											String[] loctem= textField[r][1].getText().split(",");
+											System.out.println(loctem[0]+"-"+loctem[1]);
+											double co=Double.valueOf(loctem[1]);
+											double ca=Double.valueOf(loctem[0]);
+											//System.out.println(Math.atan(co/ca));
+											System.out.println(Math.toDegrees(Math.atan(co/ca)));
+											double angle= 45.0;
+											double valCo=Math.sin(Math.atan(co/ca));
+											double valCa=Math.cos(Math.atan(co/ca));
+											System.out.println(valCa+"/"+valCo);
+											co=Double.valueOf(textField[r][0].getText())* valCo;
+											ca=Double.valueOf(textField[r][0].getText())* valCa;
+										    textField[r][1].setText(Double.toString(ca).substring(0, 3)+","+Double.toString(co).substring(0, 3));
+										 	}
+										   //pz.getEntities().size();
+										for (int j = 0; j < pz.getEntities().size(); j++) {
+											String nameTem2= dilTem.getProxemicDI(pz.getEntities().get(j).getIdenEntityName());
+											if(nameTem2.equals("intimiZone")) {
+												if (txtrHol.getText().trim().isEmpty()) {
+												txtrHol.setText(pz.getEntities().get(j).getIdenEntityName()+"\n");
+												}
+												 else {
+													
+												txtrHol.append(pz.getEntities().get(j).getIdenEntityName()+"\n");
+												}
+												
+											}
+											if(nameTem2.equals("personalZone")) {
+												if (textArea.getText().trim().isEmpty()) {
+												textArea.setText(pz.getEntities().get(j).getIdenEntityName()+"\n");
+												}
+												 else {
+													
+												textArea.append(pz.getEntities().get(j).getIdenEntityName()+"\n");
+												}
+												
+											}
+											if(nameTem2.equals("socialZone")) {
+												if (textArea_1.getText().trim().isEmpty()) {
+												textArea_1.setText(pz.getEntities().get(j).getIdenEntityName()+"\n");
+												}
+												 else {
+													
+												textArea_1.append(pz.getEntities().get(j).getIdenEntityName()+"\n");
+												}
+												
+											}
+											if(nameTem2.equals("publicZone")) {
+												if (textArea_2.getText().trim().isEmpty()) {
+												textArea_2.setText(pz.getEntities().get(j).getIdenEntityName()+"\n");
+												}
+												 else {
+													
+												textArea_2.append(pz.getEntities().get(j).getIdenEntityName()+"\n");
+												}
+												
+											}
+										}
+										
+										System.out.println(pz.getEntities().size());
+										
+									}
+								});
+							   
 								e1.get(i).getClass().getMethod("getDistance", null);
 								f1[i].getContentPane().add(lblNewLabel[i][0]);
 								textField[i][0].setText(Double.toString(e1.get(i).getDistance()));
 								f1[i].getContentPane().add(textField[i][0]);
-								//f1[i].getContentPane().add(lblNewLabel[i][1]);
-								//f1[i].getContentPane().add(textField[i][1]);
 								} catch (NoSuchMethodException e2) {
 								// TODO Auto-generated catch block
 								//e2.printStackTrace();
@@ -375,23 +508,35 @@ public class Gui {
 								f1[i].getContentPane().add(lblNewLabel[i][2]);
 								//System.out.println(e1.get(i).getMovement());
 								if (e1.get(i).getMovement()==1.0) {
+									textField[i][2].setText("positive");
+									/*
 									choicel[i][0].add("static");
 									choicel[i][0].add("negative");
 									choicel[i][0].insert("positive",0);	
+									*/
 								}
 								if (e1.get(i).getMovement()==0.0) {
-									choicel[i][0].add("static");
+									textField[i][2].setText("static");
+									/*
+									 * choicel[i][0].add("static");
 									choicel[i][0].add("negative");
-									choicel[i][0].insert("static",0);	
+									choicel[i][0].insert("static",0);
+									 */
+										
 								}
 								if (e1.get(i).getMovement()==-1.0) {
-									choicel[i][0].add("static");
+									textField[i][2].setText("negative");
+									/*
+									 * choicel[i][0].add("static");
 									choicel[i][0].add("positive");
 									choicel[i][0].insert("negative",0);	
+									 */
+									
 								}
 								
 								//choicel[i][0].add("stop");
-								f1[i].getContentPane().add(choicel[i][0]);
+								//f1[i].getContentPane().add(choicel[i][0]);
+								f1[i].getContentPane().add(textField[i][2]);
 								} catch (NoSuchMethodException e2) {
 								// TODO Auto-generated catch block
 								//e2.printStackTrace();
@@ -417,12 +562,10 @@ public class Gui {
 								// TODO Auto-generated catch block
 								//e2.printStackTrace();
 							 }
-							 
 							
-			
-					    }
-					
-					System.out.println(validationdl.getEntities().size());
+						}
+						System.out.println(validationdl.getEntities().size());
+						
 						for (int j = 0; j <validationdl.getEntities().size(); j++) {
 							
 							//System.out.println(validationdl.getEntities().get(j).getIdenEntityName()+"-"+dil.getProxemicDI(validationdl.getEntities().get(j).getIdenEntityName()));
@@ -443,83 +586,172 @@ public class Gui {
 								
 							}
 							if(nameTem.equals("personalZone")) {
-								textArea.setText(validationdl.getEntities().get(j).getIdenEntityName()+"\n");
+                                 if (textArea.getText().trim().isEmpty()) {
+                                	 textArea.setText(validationdl.getEntities().get(j).getIdenEntityName()+"\n");
+								}
+								 else {
+								textArea.append(validationdl.getEntities().get(j).getIdenEntityName()+"\n");}
 							}
 							if(nameTem.equals("socialZone")) {
-								textArea_1.setText(validationdl.getEntities().get(j).getIdenEntityName()+"\n");
+								  if (textArea_1.getText().trim().isEmpty()) {
+									  textArea_1.setText(validationdl.getEntities().get(j).getIdenEntityName()+"\n");
+									}
+									 else {
+									textArea_1.append(validationdl.getEntities().get(j).getIdenEntityName()+"\n");}
 							}
 							if(nameTem.equals("publicZone")) {
-								textArea_2.setText(validationdl.getEntities().get(j).getIdenEntityName()+"\n");
+								 if (textArea_2.getText().trim().isEmpty()) {
+									  textArea_2.setText(validationdl.getEntities().get(j).getIdenEntityName()+"\n");
+									}
+									 else {
+									textArea_2.append(validationdl.getEntities().get(j).getIdenEntityName()+"\n");}
 							}
 							
 						}
-					  //txtrHol.setText(Arrays.toString(strArray1));
-					
-						
-				
-				}
+					 	}
 				else System.out.println("error");
 			}
 		});
-		btnCreate.setBounds(800, 391, 97, 25);
+		btnCreate.setBounds(892, 160, 97, 25);
 		frame.getContentPane().add(btnCreate);
 		
 		JLabel lblProxemicBehaviorSimulator = new JLabel("Proxemic Behavior Simulator");
 		lblProxemicBehaviorSimulator.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblProxemicBehaviorSimulator.setBounds(800, 13, 250, 30);
+		lblProxemicBehaviorSimulator.setBounds(820, 13, 250, 30);
 		frame.getContentPane().add(lblProxemicBehaviorSimulator);
 		//JTextArea txtrHol = new JTextArea();
 		txtrHol.setForeground(Color.GREEN);
 		//txtrHol.setText("\r\n");
 		txtrHol.setBackground(Color.BLACK);
 		txtrHol.setLineWrap(true);
-		txtrHol.setBounds(51, 524, 120, 100);
+		txtrHol.setBounds(800, 230, 120, 88);
 		frame.getContentPane().add(txtrHol);
-		
-		JLabel lblIntimimateZone = new JLabel("Intimimate Zone");
-		lblIntimimateZone.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblIntimimateZone.setBounds(61, 495, 133, 16);
-		frame.getContentPane().add(lblIntimimateZone);
 		
 		textArea = new JTextArea();
 		textArea.setFont(new Font("Monospaced", Font.BOLD, 18));
 		textArea.setForeground(Color.GREEN);
 		textArea.setBackground(Color.BLACK);
-		textArea.setBounds(200, 524, 120, 100);
+		textArea.setBounds(950, 230, 120, 88);
 		frame.getContentPane().add(textArea);
-		
-		JLabel lblPersonalZonz = new JLabel("Personal Zona");
-		lblPersonalZonz.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblPersonalZonz.setBounds(206, 492, 113, 25);
-		frame.getContentPane().add(lblPersonalZonz);
 		
 		textArea_1 = new JTextArea();
 		textArea_1.setForeground(Color.GREEN);
 		textArea_1.setFont(new Font("Monospaced", Font.BOLD, 18));
 		textArea_1.setBackground(Color.BLACK);
-		textArea_1.setBounds(359, 524, 120, 100);
+		textArea_1.setBounds(800, 350, 120, 88);
 		frame.getContentPane().add(textArea_1);
 		
-		 textArea_2 = new JTextArea();
+		textArea_2 = new JTextArea();
 		textArea_2.setForeground(Color.GREEN);
 		textArea_2.setFont(new Font("Monospaced", Font.BOLD, 18));
 		textArea_2.setBackground(Color.BLACK);
-		textArea_2.setBounds(512, 524, 120, 100);
+		textArea_2.setBounds(950, 350, 120, 88);
 		frame.getContentPane().add(textArea_2);
 		
-		JLabel lblSocialZona = new JLabel("Social Zone");
-		lblSocialZona.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblSocialZona.setBounds(379, 491, 78, 25);
-		frame.getContentPane().add(lblSocialZona);
+		btnNewButton_1 = new JButton("Action");
+		btnNewButton_1.setEnabled(false);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String zone="";
+				if(rdbtnIntimateZone.isSelected())zone="intimiZone";
+				if(radioButton_1.isSelected())zone="personalZone";
+				if(radioButton_2.isSelected())zone="socialZone";
+				if(radioButton_3.isSelected())zone="publicZone";
+				
+				textArea_3.setText("");
+				for (int i = 0; i < validationdl.getEntities().size(); i++) {
+			    	String eachEnZ=validationdl.getEntities().get(i).getIdenEntityName();
+			    	//System.out.println(zone+"-"+eachEnZ);
+			    	//System.out.println(textField[i][1].getText());
+			    	//textField[i][1].getText();
+			    	dil.setProxemicDistance(Double.valueOf(textField[i][0].getText()));
+			        // dil.setProxemicDistance(Do);
+			     //  System.out.println(dil.getProxemicZoneByDistance());
+			    	if(zone.equals(dil.getProxemicZoneByDistance())) {
+			    		JInternalFrame[] fraTem = (JInternalFrame[]) getF1();
+			    		
+			    		//System.out.println(fraTem[i].getName());
+			    		String location=textField[i][1].getText();
+			    		String movement=textField[i][2].getText();
+			    		String ori =choicel[i][1].getSelectedItem();
+			    		BehaviourEI be= new BehaviourEI(zone,location, movement, ori);
+			    		//System.out.println(be.getLocation()+be.getMovement()+be.isOrientation());
+			    		
+			    		be.getEvent();
+			    		if (textArea_3.getText().trim().isEmpty()) {
+			    		textArea_3.setText(fraTem[i].getTitle()+":"+be.getEvent()+"\n");
+			    		}
+			    		else {
+			    			textArea_3.append(fraTem[i].getTitle()+":"+be.getEvent()+"\n");
+			    		}
+			    		}
+			    	
+			    	
+			    	//System.out.println(dil.getProxemicDI(eachEnZ));;
+			    	
+				}
+			  
+			    /*
+			     * 	for (int j = 0; j <validationdl.getEntities().size(); j++) {
+					dil.setProxemicDistance(e1.get(j).getDistance());
+					if(dil.getProxemicZoneByDistance().equals(zone)) {
+						// Double DistTem=e1.get(j).getDistance();
+						 String LocTem =e1.get(j).getLocation();
+						 Double movTem=e1.get(j).getMovement();
+						 Boolean orTem= e1.get(j).isOrientation();
+						//System.out.println(LocTem);
+						EventIdentity event= new EventIdentity(LocTem, movTem, orTem, e1.get(j).getIdentity());
+						System.out.println(event.getEvent("PZ"));
+						}
+					
+					
+				}
+			     */
+				 
+				  
+				 	
+				  
+			
+			
+					
+			
+			}
+		});
+		btnNewButton_1.setBounds(688, 405, 90, 33);
+		frame.getContentPane().add(btnNewButton_1);
+		textArea_3 = new JTextArea();
+		textArea_3.setForeground(Color.GREEN);
+		textArea_3.setFont(new Font("Monospaced", Font.BOLD, 18));
+		textArea_3.setBackground(Color.BLACK);
+		textArea_3.setBounds(23, 358, 653, 80);
+		frame.getContentPane().add(textArea_3);
 		
-		JLabel lblPublicZone = new JLabel("Public Zone");
-		lblPublicZone.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblPublicZone.setBounds(537, 491, 78, 25);
-		frame.getContentPane().add(lblPublicZone);
 		
+		//radio
+		rdbtnIntimateZone = new JRadioButton("Intimate zone");
+		rdbtnIntimateZone.setBackground(Color.WHITE);
+		radioButton_1 = new JRadioButton("Personal zone");
+		radioButton_1.setBackground(Color.WHITE);
+		radioButton_2 = new JRadioButton("Social zone");
+		radioButton_2.setBackground(Color.WHITE);
+		radioButton_3 = new JRadioButton("Public zone ");
+		radioButton_3.setBackground(Color.WHITE);
+		group = new ButtonGroup();
+		rdbtnIntimateZone.setSelected(true);
+		group.add(rdbtnIntimateZone);
+	    group.add(radioButton_1);
+	    group.add(radioButton_2);
+	    group.add(radioButton_3); 
+	     
+	    radioButton_1.setBounds(930, 200, 113, 25);
+	    radioButton_2.setBounds(782, 320, 97, 25);
+		rdbtnIntimateZone.setBounds(782, 200, 107, 25);
+		radioButton_3.setBounds(930, 320, 97, 25);
 		
-		
-		
+		frame.getContentPane().add(rdbtnIntimateZone);
+		frame.getContentPane().add(radioButton_1);
+		frame.getContentPane().add(radioButton_2);
+		frame.getContentPane().add(radioButton_3);
 		
 	}
 }

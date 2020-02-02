@@ -7,35 +7,28 @@
      <tns:intimate>0.4</tns:intimate>
      <tns:personal>1</tns:personal>
      <tns:social>4</tns:social>
-     <tns:public>10</tns:public>  
+     <tns:public>7</tns:public>  
   </tns:zone>
      <tns:entity>
-     <tns:distance> 0.4</tns:distance>
-     <tns:identity>Identity</tns:identity>
-     <tns:location>null</tns:location>
+     <tns:distance>0.85</tns:distance>
+     <tns:identity>Peter</tns:identity>
+     <tns:location>0.8,0.3</tns:location>
      <tns:movement>1</tns:movement>
      <tns:orientation>true</tns:orientation>
    </tns:entity>
 	<tns:entity>
-     <tns:distance> 0.9</tns:distance>
-     <tns:identity>Identity</tns:identity>
+     <tns:distance>0.8</tns:distance>
+     <tns:identity>Ana</tns:identity>
      <tns:location>null</tns:location>
      <tns:movement>1</tns:movement>
      <tns:orientation>false</tns:orientation>
    </tns:entity>
    	<tns:entity>
-     <tns:distance> 0.2</tns:distance>
-     <tns:identity>Identity</tns:identity>
+     <tns:distance>3</tns:distance>
+     <tns:identity>Entity</tns:identity>
      <tns:location>null</tns:location>
-     <tns:movement>1</tns:movement>
-     <tns:orientation>false</tns:orientation>
-   </tns:entity>
-   <tns:entity>
-     <tns:distance> 5</tns:distance>
-     <tns:identity>entity</tns:identity>
-     <tns:location>null</tns:location>
-     <tns:movement>0.0</tns:movement>
+     <tns:movement>0</tns:movement>
      <tns:orientation>true</tns:orientation>
    </tns:entity>
-</tns:proxemic>
+  </tns:proxemic>
   
